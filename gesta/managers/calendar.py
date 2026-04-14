@@ -129,6 +129,7 @@ class AppointmentManager:
             service_id   = service_id,
             scheduled_at = scheduled_at,
             notes        = notes,
+            status = AppointmentStatus.SCHEDULED,
         )
         appt.service = service
         appt.clients   = clients

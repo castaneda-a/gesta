@@ -157,6 +157,7 @@ class TransactionManager:
         tx.offering = offering
         tx.clients   = clients
         tx.providers = providers
+        tx.status = TransactionStatus.PENDING
 
         self.session.add(tx)
         return tx
@@ -206,12 +207,12 @@ class TransactionManager:
             occurred_at    = occurred_at,
             notes          = notes,
         )
-        tx.clients   = list(appt.clients)
-        tx.providers = list(appt.providers)
+        tx.clients   = appt.clients
+        tx.providers = appt.providers
         tx.appointment = appt
         tx.offering = appt.service
         appt.transaction = tx
-
+        tx.status = TransactionStatus.PENDING
         appt.status = AppointmentStatus.COMPLETED
 
         self.session.add(tx)
@@ -411,6 +412,7 @@ class PaymentManager:
             paid_at   = paid_at,
             notes     = notes,
         )
+        payment.is_refund = False
         payment.transactions = transactions
 
         self.session.add(payment)
