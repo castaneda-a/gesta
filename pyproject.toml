@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "AGPL-3.0-or-later" }
 authors = [
-    { name = "Tu Nombre", email = "tu@email.com" }
+    { name = "Angel", email = "ascastagar@gmail.com" }
 ]
 keywords = ["business", "administration", "appointments", "transactions"]
 classifiers = [
