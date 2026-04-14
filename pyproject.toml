@@ -1,12 +1,30 @@
 [project]
 name = "gesta"
 version = "0.1.0"
-description = "A Python library designed to handle administration for buisnesses."
+description = "A Python library designed to handle administration for businesses."
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "AGPL-3.0-or-later" }
+authors = [
+    { name = "Tu Nombre", email = "tu@email.com" }
+]
+keywords = ["business", "administration", "appointments", "transactions"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+]
 dependencies = [
     "sqlalchemy>=2.0.49",
 ]
+
+[project.urls]
+Homepage   = "https://github.com/castaneda-a/gesta"
+Repository = "https://github.com/castaneda-a/gesta"
+Issues     = "https://github.com/castaneda-a/gesta/issues"
 
 [dependency-groups]
 dev = [
@@ -14,5 +32,13 @@ dev = [
     "pytest>=9.0.3",
 ]
 
+[build-system]
+requires      = ["hatchling"]
+build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["gesta"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
 

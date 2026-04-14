@@ -125,10 +125,14 @@ def validate_service_has_provider(
     """
     Verifica que un servicio que requiere proveedor
     tenga al menos uno asignado.
+    Los productos nunca requieren proveedor.
     """
+    from gesta.core.entities import OfferingType
+    if offering.type == OfferingType.PRODUCT:
+        return
+
     if offering.requires_provider and not providers:
         raise NoProviderError(offering.name)
-
 
 # ---------------------------------------------------------------------------
 # Roles

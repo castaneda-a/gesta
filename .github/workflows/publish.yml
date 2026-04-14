@@ -1,0 +1,93 @@
+# .github/workflows/publish.yml
+#
+# Workflow de build y publicación a PyPI.
+# Se activa automáticamente al crear un release en GitHub,
+# o manualmente desde la pestaña Actions.
+#
+# Requiere configurar en GitHub:
+#   Settings → Secrets → PYPI_API_TOKEN
+
+name: Publish to PyPI
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:    # permite correrlo manualmente
+
+jobs:
+
+  # ---------------------------------------------------------------------------
+  # 1. Tests — siempre corren antes de publicar
+  # ---------------------------------------------------------------------------
+  test:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install dependencies
+        run: uv sync --all-groups
+
+      - name: Run tests
+        run: uv run pytest tests/ -v
+
+  # ---------------------------------------------------------------------------
+  # 2. Build — construye el paquete
+  # ---------------------------------------------------------------------------
+  build:
+    name: Build package
+    runs-on: ubuntu-latest
+    needs: test         # solo si los tests pasan
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Build package
+        run: uv build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  # ---------------------------------------------------------------------------
+  # 3. Publish — sube a PyPI
+  # ---------------------------------------------------------------------------
+  publish:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    needs: build        # solo si el build fue exitoso
+    environment: pypi   # ambiente con protecciones opcionales en GitHub
+
+    permissions:
+      id-token: write   # necesario para trusted publishing
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
