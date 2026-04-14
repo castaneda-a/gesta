@@ -4,6 +4,14 @@ A Python library for business administration — appointments, transactions, pay
 
 ---
 
+## Tutorial
+For a detailed notebook tutorial, visit the following link:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/castaneda-a/gesta/blob/main/gesta_tutorial.ipynb)
+
+
+---
+
 ## Features
 
 - **Appointment management** — book, reschedule, cancel, and complete appointments with conflict detection
